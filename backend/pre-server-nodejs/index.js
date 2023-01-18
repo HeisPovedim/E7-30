@@ -1,5 +1,4 @@
 import express from 'express';
-import { PythonShell } from 'python-shell';
 import shell from 'shelljs';
 import cors from 'cors';
 
@@ -14,9 +13,13 @@ app.listen(PORT, () => {
   console.log('server is running to port: ' + PORT);
 });
 
-app.get("/start", (req, res) => {
+app.post("/start", (req, res) => {
+  console.log(req);
+
+  //console.log(res);
   shell.exec('sh launch.sh', (error, stdout, stderr) => {
     console.log( stdout);
     res.send(stdout);
   })
+
 })

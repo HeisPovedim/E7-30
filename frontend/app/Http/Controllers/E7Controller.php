@@ -18,17 +18,29 @@ class E7Controller extends Controller
         return(view('welcome'));  
   }
 
-  public function getData(){
+  public function getData(Request $request){
 
-   // dump('попал в контроллер');
-     $respone =  Http::get('http://127.0.0.1:3456/start');
+    //начал обработку ответа + сам запрос
+     $respone =     Http::get('http://127.0.0.1:3456/start');
      $data = $respone->body();
      $data = $data.trim(' ');
-    Session::flash('data', $data); 
-    return redirect('/');
-    //return(view('welcome',['data'=>$keywords]));
+     Session::flash('data', $data); 
+     //конец обработки ответа
+     return redirect('/');
   }
+  public  function test(Request $request)
+  {
+    # code...
+  dump($request->all());
+  $jsArray = [
+    'start_range'=>$request->input('start_range'),
+    'end_range'=>$request->input('end_range'),
+    'step'=>$request->input('step')
+  ];
+  dump($jsArray);
+  Http::post('http://127.0.0.1:3456/saveCfg',$jsArray);
 
+  }
     /**
      * Store a newly created resource in storage.
      *

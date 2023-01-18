@@ -15,7 +15,7 @@ background-color: seashell;
 
  .btn_back{
   width:90px;
-  float: right;
+  text-align: center;
   display:block;
   font-family: arial;
   text-decoration: none;
@@ -91,7 +91,15 @@ font-size: large;
     <p>header</p>
 </header>
         <main >
-            <button class="btn_back" id='getData'>get data</button>
+            <form  method="post" action="/getData">
+                @csrf
+                <input type="number" required name='start_range' placeholder="Начальная частота">
+                <input type="number" required name='end_range' placeholder="Конечная частота">
+                <input type="number" required name='step' placeholder="Шаг">
+                <button class="btn_back"  type="submit">save data</button>
+            </form>
+                <button class="btn_back" id='getData' >get data</button>
+
                 <div class="conteiner" id='dataBlock'>
                     <?php
                     $respone = session()->get('data');
@@ -100,16 +108,14 @@ font-size: large;
                     unset($data[$datalenght-1]);
                     if(($data))
                     {
-                        
-                        echo "<h1>- Полуены данные ...</h1>";
+                        echo "<h1>- Получены данные ...</h1>";
                         date_default_timezone_set('Europe/Moscow');
                         $date = date('m/d/Y h:i:s a', time());
-                        echo"Время получение данных - $date";
+                        echo"<h2>Время получения данных - $date</h2>";
                         foreach ($data as &$el) {
                             echo "<p>- $el.</p>";
                         }
                         echo"<button class='btn_back' id='closeData'>close data</button>";
-
                     } 
                     ?>
                 </div>
@@ -118,20 +124,22 @@ font-size: large;
     <p>Footer</p>
 </footer>
 </body>
+
 <script type="text/javascript">
+    //logic
     if(document.getElementById('closeData')){
         document.getElementById('getData').style.display='none';
     }
 
-    //редирект
-    document.getElementById("getData").onclick = function () {
+    //start
+/*     document.getElementById("getData").onclick = function () {
         window.location.href = "/getData";
-    }
-
-    document.getElementById("closeData").onclick= function(){
+    } */
+    //end
+/*     document.getElementById("closeData").onclick= function(){
         document.getElementById('dataBlock').remove();
         document.getElementById('getData').style.display='';
-        }
+        } */
 
 </script>
 </html>
