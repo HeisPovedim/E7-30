@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\E7;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Session;
 
 class E7Controller extends Controller
 {
@@ -18,8 +20,13 @@ class E7Controller extends Controller
 
   public function getData(){
 
-      dump('попал в контроллер');
-
+   // dump('попал в контроллер');
+     $respone =  Http::get('http://127.0.0.1:3456/start');
+     $data = $respone->body();
+     $data = $data.trim(' ');
+    Session::flash('data', $data); 
+    return redirect('/');
+    //return(view('welcome',['data'=>$keywords]));
   }
 
     /**

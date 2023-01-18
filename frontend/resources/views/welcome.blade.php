@@ -1,11 +1,4 @@
-<?php 
 
-    if(isset($_POST['data'])){
-        dd($_POST['data']);
-    }
-
-
-?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -99,8 +92,26 @@ font-size: large;
 </header>
         <main >
             <button class="btn_back" id='getData'>get data</button>
-                <div class="conteiner">
-                    ТЕЛО
+                <div class="conteiner" id='dataBlock'>
+                    <?php
+                    $respone = session()->get('data');
+                    $data = explode("\r", $respone) ;
+                    $datalenght = count($data);
+                    unset($data[$datalenght-1]);
+                    if(($data))
+                    {
+                        
+                        echo "<h1>- Полуены данные ...</h1>";
+                        date_default_timezone_set('Europe/Moscow');
+                        $date = date('m/d/Y h:i:s a', time());
+                        echo"Время получение данных - $date";
+                        foreach ($data as &$el) {
+                            echo "<p>- $el.</p>";
+                        }
+                        echo"<button class='btn_back' id='closeData'>close data</button>";
+
+                    } 
+                    ?>
                 </div>
         </main>
 <footer>
@@ -108,10 +119,19 @@ font-size: large;
 </footer>
 </body>
 <script type="text/javascript">
+    if(document.getElementById('closeData')){
+        document.getElementById('getData').style.display='none';
+    }
 
     //редирект
     document.getElementById("getData").onclick = function () {
         window.location.href = "/getData";
-    };
+    }
+
+    document.getElementById("closeData").onclick= function(){
+        document.getElementById('dataBlock').remove();
+        document.getElementById('getData').style.display='';
+        }
+
 </script>
 </html>

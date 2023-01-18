@@ -14,9 +14,9 @@ app.listen(PORT, () => {
   console.log('server is running to port: ' + PORT);
 });
 
-app.get("/1", (req, res) => {
+app.get("/start", (req, res) => {
   shell.exec('sh launch.sh', (error, stdout, stderr) => {
-    console.log(stdout);
+    console.log( stdout);
+    res.send(stdout);
   })
-  res.send(stdout);
 })
