@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\E7;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class E7Controller extends Controller
 {
@@ -16,10 +17,54 @@ class E7Controller extends Controller
         return(view('welcome'));  
   }
 
-  public function getData(){
-
+  public function getData(Request $request){
       dump('попал в контроллер');
+      $checkbox = null;
+      if(is_null($request->input('z_only'))){
+        $checkbox = false;
+      }else{
+        $checkbox = true;
+      }
+      $parametrs = [
+        'f_start' => $request->input('f_start'),
+        'f_end' => $request->input('f_end'),
+        'step' => $request->input('step'),
+        'z_only' => $checkbox,
+      ];
+;
+   $response =  Http::post('http://127.0.0.1:3456/start',$parametrs);
+   $data = json_decode($response->body());
 
+
+    $tmpSplitData = [];
+   foreach ($data as $el){
+    dump($el);
+    $myValues = explode(',', $el);
+    array_push($tmpSplitData,$myValues);
+   }
+   dump('end result');
+   //dd($tmpSplitData);
+   $reverseData =[];
+   for ($i=0; $i < count($tmpSplitData[0]); $i++) {
+        $tmpDataReverse =[];
+        for ($j=0; $j < count($tmpSplitData); $j++) { 
+            array_push($tmpDataReverse,$tmpSplitData[$j][$i]);
+        }
+        array_push($reverseData,$tmpDataReverse);
+   }
+   dump('reverse:');
+  // dd($reverseData);
+   //dd('end pros die');
+   //перебрать 
+   //запись в файл
+   $str = " ";
+   foreach ($reverseData as $innerArr) {
+    foreach ($innerArr as $item) {
+        $str .= $item . ",";
+    }
+    $str .=  "\n";
+}
+   file_put_contents('data.csv', $str);
   }
 
     /**

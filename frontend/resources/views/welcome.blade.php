@@ -100,7 +100,15 @@ font-size: large;
         <main >
             <button class="btn_back" id='getData'>get data</button>
                 <div class="conteiner">
-                    ТЕЛО
+                    <form action="/getData" method="post">
+                    @csrf
+                    <input type="number" name="f_start" placeholder="f_start" required />
+                    <input type="number" name="f_end" placeholder="f_end" required/>
+                    <input type="number" name="step" placeholder="step" required/><br>
+                    <label for="z_only">z_only</label>
+                    <input type="checkbox" name="z_only" placeholder="z_only" />
+                    <input type="submit">
+                    </form>
                 </div>
         </main>
 <footer>
